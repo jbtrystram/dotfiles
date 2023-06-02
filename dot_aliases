@@ -1,0 +1,28 @@
+#alias ls='ls --color=auto'
+alias l='ls -lh'
+
+alias cp='cp -i'
+alias df='df -h'
+alias du='du -ac --si --max-dept=1 | sort -h'
+alias g='git'
+alias gadd='git add -uv'
+alias grep='grep --color=auto '
+alias l='ls -lFh --color'
+alias la='ls -laFh --color'
+alias ll='ls -alFh'
+
+alias mkdir='mkdir -pv'
+alias mount='mount | column -t'
+alias mv='mv -i'
+
+alias reboot='systemctl reboot'
+alias sudo='sudo '
+alias untar='tar xvf'
+
+#git
+#alias git diff='git diff --ignore-space-change'
+
+# open-like
+alias open='xdg-open'
+
+alias docker=podman
