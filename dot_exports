@@ -1,0 +1,8 @@
+# Default apps
+export EDITOR='vim'
+
+# auth provider for gitsign 
+export GITSIGN_CONNECTOR_ID=https://github.com/login/oauth
+
+# PATH modifications
+export PATH="$HOME/bin:$PATH"
