@@ -43,6 +43,8 @@ eval "$(ssh-agent -s)" > /dev/null
 
 #Custom aliases
 source $HOME/.aliases
+# Exports 
+source $HOME/.exports
 
 #print the toolbox name if I am in a toolbox
 toolbox_name() {
