@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/jibou/.oh-my-zsh
+export ZSH=/home/jibou/.oh-my-zsh
 
 ZSH_THEME="theunraveler-gruvbox"
 
@@ -19,24 +19,9 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
- if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
- else
-   export EDITOR='vim'
- fi
-
-
-# my local bin :
-export PATH="$HOME/bin:$PATH"
 
 # disable shared history
 unsetopt share_history
-
-# local python packages
-export PATH="$PATH:$HOME/.local/bin/"
-
-#local go
-export PATH="$HOME/bin/golang/bin:$PATH"
 
 # start ssh-agent
 eval "$(ssh-agent -s)" > /dev/null
