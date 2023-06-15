@@ -1,6 +1,10 @@
 # -*- conf -*-
 
+{{ if eq .chezmoi.config.data.hostname "desktop" -}}
 font=Fira Code:size=10
+{{ else -}}
+font=Fira Code:size=8
+{{ end }}
 
 # Blank space around the borders, in pixel
 # The format is XXxYY
@@ -9,7 +13,7 @@ pad=20x25
 
 # Colors (Gruvbox Material Dark Medium)
 [colors]
-alpha=0.91
+alpha=0.80
 foreground=dfbf8e
 background=282828
 
