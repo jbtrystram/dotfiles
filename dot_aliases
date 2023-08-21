@@ -26,3 +26,5 @@ alias untar='tar xvf'
 alias open='xdg-open'
 
 alias docker=podman
+#fedora seems to ship vim hidden as vi`
+alias vim=vi

@@ -9,7 +9,7 @@
 [init]
 	defaultBranch = main
 [core]
-	editor = vim
+	editor = vi
 [rerere]
 	enabled = true
 [alias]
