@@ -25,3 +25,17 @@ cosa() {
               ${COREOS_ASSEMBLER_CONTAINER:-$COREOS_ASSEMBLER_CONTAINER_LATEST} "$@"
    rc=$?; set +x; return $rc
 }
+
+cosa_help() {
+
+  echo "A wrapper around the coreOS assembler container"
+  echo "Some helpful environnement variables to set before creating the container:"
+  echo "     export COREOS_ASSEMBLER_ADD_CERTS='y'"
+  echo "     export COREOS_ASSEMBLER_GIT='$HOME/github/coreos/coreos-assembler'"
+  
+  echo ""
+  echo "To build kola/plume whatever, start shell from the coreos-assembler git repo, then"
+  echo "./mantle/build kola"
+  echo "./bin/kola version #calls the freshly built binary"
+  
+}
