@@ -2,28 +2,17 @@
 
 # Arrange the screens as they are on the desk : 
 
-set $DELL "HDMI-A-1" 
-set $XIAOMI "DP-1"
+set $DELL "DP-1"
  
 output $DELL position 0 0 res 3840x2160@60Hz scale 1
-# Horizontal = 3840/2-3440/2 for aligned centers
-#output $XIAOMI position 3840 0 res 3440x1440@144Hz adaptive_sync on scale 1
-output $XIAOMI position 3840 0 res 3440x1440@144Hz  scale 1
 
 # Set wallpapers
 
 output $DELL background $HOME/.config/fall.jpg fit
-output $XIAOMI background $HOME/.config/fall.jpg fill
 
 
 # Assigns workspaces to monitors
-workspace 1 output $DELL
-workspace 3 output $DELL
-workspace 5 output $DELL
-
-workspace 2 output $XIAOMI
-workspace 4 output $XIAOMI
-workspace 6 output $XIAOMI
+# No longer applicable
 
 {{ else -}}
 
