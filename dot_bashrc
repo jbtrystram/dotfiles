@@ -1,0 +1,57 @@
+# .bashrc
+
+TOOLBOX_IMAGE="quay.io/jbtrystram/toolbox:latest"
+TOOLBOX_NAME="jbtrystram-toolbox"
+
+toolbox_respawn() {
+   podman pull ${TOOLBOX_IMAGE}
+   toolbox rm ${TOOLBOX_NAME} --force
+   toolbox create  ${TOOLBOX_NAME} --image ${TOOLBOX_IMAGE}
+}
+
+prompt() {
+while true
+do
+    echo 'Do you want to update ?'
+    read -r -t 10 -p '[Y/n] ' choice
+    case "$choice" in
+      y|Y) toolbox_respawn;;
+      *) break;;
+    esac
+done
+}
+
+toolbox_age() {
+   local -r TOOLBOX_NAME="jbtrystram-toolbox"
+   if podman container exists ${TOOLBOX_NAME}; then
+       local -r create_date_str="$(podman inspect -f "{{.Created}}" ${TOOLBOX_NAME} | awk '{print $1}')"
+       local -r create_date="$(date -d ${create_date_str} +%s)"
+       if [[ $(date +%s) -ge $((create_date + 60*60*24*7)) ]] ; then
+         echo "The toolbox container is more that a week old and should be refreshed." >&2
+	 prompt
+       fi
+   else 
+       toolbox create  ${TOOLBOX_NAME} --image ${TOOLBOX_IMAGE}   
+   fi
+}
+
+
+
+if [[ ! -f "/run/.containerenv" ]]; then
+    toolbox_age
+	
+    # Set SHELL to Zsh for the toolbox
+    SHELL=/bin/zsh
+    toolbox enter ${TOOLBOX_NAME} 
+fi
+
+# Force SHELL to be bash
+SHELL=/bin/bash
+
+# Source global definitions
+if [ -f /etc/profile ]; then
+	source /etc/profile
+fi
+if [ -f /etc/bashrc ]; then
+	source /etc/bashrc
+fi
