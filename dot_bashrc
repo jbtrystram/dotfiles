@@ -15,7 +15,10 @@ do
     echo 'Do you want to update ?'
     read -r -t 10 -p '[Y/n] ' choice
     case "$choice" in
-      y|Y) toolbox_respawn;;
+      y|Y) 
+	  toolbox_respawn
+	  break
+	  ;;
       *) break;;
     esac
 done
