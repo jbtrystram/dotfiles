@@ -1,5 +1,8 @@
 # .bashrc
 
+# Check for an interactive session
+[ -z "$PS1" ] && return
+
 TOOLBOX_IMAGE="quay.io/jbtrystram/toolbox:latest"
 TOOLBOX_NAME="jbtrystram-toolbox"
 
