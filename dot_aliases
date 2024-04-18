@@ -27,6 +27,10 @@ alias open='xdg-open'
 
 alias docker=podman
 #fedora seems to ship vim hidden as vi`
-alias vim=vi
+alias vim=nvim
+alias vi=nvim
 
 source ~/.cosa_alias
+
+# open vscode in the current directory 
+alias vscode='flatpak run com.visualstudio.code  -n . > /dev/null'

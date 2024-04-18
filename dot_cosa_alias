@@ -30,9 +30,11 @@ cosa_help() {
 
   echo "A wrapper around the coreOS assembler container"
   echo "Some helpful environnement variables to set before creating the container:"
-  echo "     export COREOS_ASSEMBLER_ADD_CERTS='y'"
+  echo "     export COREOS_ASSEMBLER_ADD_CERTS='y'  #when working on RHCOS "
   echo "     export COREOS_ASSEMBLER_GIT='$HOME/github/coreos/coreos-assembler'"
+  echo "     export COREOS_ASSEMBLER_CONTAINER_RUNTIME_ARGS='--net host' # or some other volumes mounts"
   
+
   echo ""
   echo "To build kola/plume whatever, start shell from the coreos-assembler git repo, then"
   echo "./mantle/build kola"

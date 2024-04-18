@@ -16,6 +16,7 @@ plugins=(
   zsh-autosuggestions
   rust
   toolbox
+  vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -39,4 +40,5 @@ toolbox_name() {
     fi
 }
 
-
+# vim mode ! 
+set -o vi

@@ -1,19 +1,19 @@
 # Comment
 
-PROMPT='%{$FG[172]%}$(toolbox_name)%{$reset_color%}%{$FG[214]%}[%c] %{$reset_color%}'
+PROMPT='%{$FG[003]%}$(toolbox_name)%{$reset_color%}%{$FG[001]%}[%c] %{$reset_color%}'
 
-RPROMPT='%{$FG[072]%}$(git_prompt_info)%{$reset_color%} $(git_prompt_status)%{$reset_color%}'
+RPROMPT='%{$FG[002]%}$(git_prompt_info)%{$reset_color%} $(git_prompt_status)%{$reset_color%}'
 
 ZSH_THEME_GIT_PROMPT_PREFIX=""
 ZSH_THEME_GIT_PROMPT_SUFFIX=""
 ZSH_THEME_GIT_PROMPT_DIRTY=""
 ZSH_THEME_GIT_PROMPT_CLEAN=""
-ZSH_THEME_GIT_PROMPT_ADDED="%{$FG[066]%} ✈"
-ZSH_THEME_GIT_PROMPT_MODIFIED="%{$FG[172]%} ✭"
-ZSH_THEME_GIT_PROMPT_DELETED="%{$FG[124]%} ✗"
-ZSH_THEME_GIT_PROMPT_RENAMED="%{$FG[066]%} ➦"
-ZSH_THEME_GIT_PROMPT_UNMERGED="%{$FG[132]%} ✂"
-ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$FG[245]%} ✱"
+ZSH_THEME_GIT_PROMPT_ADDED="%{$FG[004]%} ✈"
+ZSH_THEME_GIT_PROMPT_MODIFIED="%{$FG[003]%} ✭"
+ZSH_THEME_GIT_PROMPT_DELETED="%{$FG[001]%} ✗"
+ZSH_THEME_GIT_PROMPT_RENAMED="%{$FG[004]%} ➦"
+ZSH_THEME_GIT_PROMPT_UNMERGED="%{$FG[001]%} ✂"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$FG[006]%} ✱"
 
 
 ### Variables (default: Gruvbox)

@@ -14,6 +14,9 @@
 	enabled = true
 [alias]
 	unstage = reset --
+        lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)' --all
+        lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+        lg = lg1
 [core]
     pager = delta
 	autocrlf = input
@@ -25,6 +28,16 @@
     navigate = true  # use n and N to move between diff sections
     line-numbers = true
     side-by-side = true
+    light = true
+    minus-style = bold 001
+    minus-non-emph-style = reverse 174 
+    minus-emph-style = bold reverse 001 
+    line-numbers-minus-style = bold 174
+    plus-style = bold italic 002
+    plus-emph-style = bold reverse 002
+    plus-non-emph-style = reverse 143
+    line-numbers-plus-style = bold 143
+
 
 [merge]
     conflictstyle = diff3
