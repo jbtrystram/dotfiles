@@ -42,3 +42,6 @@ toolbox_name() {
 
 # vim mode ! 
 set -o vi
+
+# Enable zoxide
+eval "$(zoxide init zsh)"
