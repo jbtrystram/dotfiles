@@ -11,6 +11,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="dd.mm.yyyy"
 
 plugins=(
+  fzf
   git
   jsontools
   zsh-autosuggestions
@@ -35,8 +36,7 @@ source $HOME/.exports
 #print the toolbox name if I am in a toolbox
 toolbox_name() {
     if [[ -f /run/.toolboxenv ]]; then
-        local toolbox_name=$(grep "name=" /run/.containerenv | cut -f2 -d"=" | tr -d '"')
-        echo "⬢ $toolbox_name "
+        echo "⬢ "
     fi
 }
 
