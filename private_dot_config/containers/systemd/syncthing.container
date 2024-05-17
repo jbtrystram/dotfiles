@@ -14,8 +14,10 @@ ContainerName=syncthing
 Network=host 
 HostName=syncthing
 AutoUpdate=registry
-#User=root
 UserNS=keep-id
+HealthCmd=curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1
+HealthInterval=2m 
+HealthTimeout=10s
 
 [Service]
 Restart=always
