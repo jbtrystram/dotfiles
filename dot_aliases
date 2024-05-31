@@ -35,5 +35,3 @@ source ~/.cosa_alias
 # open vscode in the current directory 
 alias vscode='flatpak run com.visualstudio.code  -n . > /dev/null'
 
-# get a shell on the host (outside toolbox container)
-alias host="flatpak-spawn --host --env=NO_TOOLBOX=true bash"
