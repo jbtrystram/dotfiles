@@ -43,12 +43,11 @@ toolbox_age() {
 
 
 
-if [[ ! -f "/run/.containerenv" ]]; then
+if [[ ! -f "/run/.containerenv" ]] && [[ ! -n "$NO_TOOLBOX" ]]; then
     toolbox_age
-	
     # Set SHELL to Zsh for the toolbox
     SHELL=/bin/zsh
-    toolbox enter ${TOOLBOX_NAME} 
+    exec toolbox enter ${TOOLBOX_NAME} 
 fi
 
 # Force SHELL to be bash

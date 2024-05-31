@@ -1,3 +1,4 @@
+COREOS_ASSEMBLER_CONFIG_GIT=/home/jibou/code/github.com/coreos/fedora-coreos-config
 cosa() {
    env | grep COREOS_ASSEMBLER
    local -r COREOS_ASSEMBLER_CONTAINER_LATEST="quay.io/coreos-assembler/coreos-assembler:latest"
@@ -31,7 +32,8 @@ cosa_help() {
   echo "A wrapper around the coreOS assembler container"
   echo "Some helpful environnement variables to set before creating the container:"
   echo "     export COREOS_ASSEMBLER_ADD_CERTS='y'  #when working on RHCOS "
-  echo "     export COREOS_ASSEMBLER_GIT='$HOME/github/coreos/coreos-assembler'"
+  echo "     export COREOS_ASSEMBLER_CONFIG_GIT='$HOME/code/github.com/coreos/fedora-coreos-config'"
+  echo "     export COREOS_ASSEMBLER_GIT='$HOME/code/github.com/coreos/coreos-assembler'"
   echo "     export COREOS_ASSEMBLER_CONTAINER_RUNTIME_ARGS='--net host' # or some other volumes mounts"
   
 
