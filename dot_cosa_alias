@@ -1,4 +1,10 @@
 COREOS_ASSEMBLER_CONFIG_GIT=/home/jibou/code/github.com/coreos/fedora-coreos-config
+COSA_DIR=/home/jibou/cosa/fcos
+
+if test -n "${COSA_RHCOS}"; then
+  COSA_DIR=/home/jibou/cosa/rhcos
+  COREOS_ASSEMBLER_ADD_CERTS=y
+fi
 cosa() {
    env | grep COREOS_ASSEMBLER
    local -r COREOS_ASSEMBLER_CONTAINER_LATEST="quay.io/coreos-assembler/coreos-assembler:latest"
@@ -17,7 +23,7 @@ cosa() {
    set -x
    podman run --rm -ti --security-opt=label=disable --privileged                                    \
               --uidmap=1000:0:1 --uidmap=0:1:1000 --uidmap=1001:1001:64536                          \
-              -v=${PWD}:/srv/ --device=/dev/kvm --device=/dev/fuse                                  \
+              -v=${COSA_DIR}:/srv/ --device=/dev/kvm --device=/dev/fuse                                  \
               --tmpfs=/tmp -v=/var/tmp:/var/tmp --name=cosa                                         \
               ${COREOS_ASSEMBLER_CONFIG_GIT:+-v=$COREOS_ASSEMBLER_CONFIG_GIT:/srv/src/config/:ro}   \
               ${COREOS_ASSEMBLER_GIT:+-v=$COREOS_ASSEMBLER_GIT/src/:/usr/lib/coreos-assembler/:ro}  \
@@ -31,7 +37,7 @@ cosa_help() {
 
   echo "A wrapper around the coreOS assembler container"
   echo "Some helpful environnement variables to set before creating the container:"
-  echo "     export COREOS_ASSEMBLER_ADD_CERTS='y'  #when working on RHCOS "
+  echo "     export COSA_RHCOS=1  #when working on RHCOS"
   echo "     export COREOS_ASSEMBLER_CONFIG_GIT='$HOME/code/github.com/coreos/fedora-coreos-config'"
   echo "     export COREOS_ASSEMBLER_GIT='$HOME/code/github.com/coreos/coreos-assembler'"
   echo "     export COREOS_ASSEMBLER_CONTAINER_RUNTIME_ARGS='--net host' # or some other volumes mounts"
