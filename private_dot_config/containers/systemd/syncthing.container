@@ -7,9 +7,9 @@ After=network-online.target
 [Container]
 Image=docker.io/syncthing/syncthing:latest
 Environment=STGUIADDRESS=127.0.0.1:8384 
-Volume=/var/home/jibou/Sync/:/home/jibou/Sync:Z
-Volume=/var/home/jibou/keepass/:/home/jibou/keepass:Z
-Volume=/var/home/jibou/.config/syncthing/:/var/syncthing/config:Z
+Volume=%h/Sync/:/home/jibou/Sync:Z
+Volume=%h/keepass/:/home/jibou/keepass:Z
+Volume=%h/.config/syncthing/:/var/syncthing/config:Z
 ContainerName=syncthing 
 Network=host 
 HostName=syncthing
