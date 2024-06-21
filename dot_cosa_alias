@@ -1,8 +1,8 @@
-COREOS_ASSEMBLER_CONFIG_GIT=/home/jibou/code/github.com/coreos/fedora-coreos-config
-COSA_DIR=/home/jibou/cosa/fcos
+COREOS_ASSEMBLER_CONFIG_GIT=${HOME}/code/github.com/coreos/fedora-coreos-config
+COSA_DIR=${HOME}/cosa/fcos
 
 if test -n "${COSA_RHCOS}"; then
-  COSA_DIR=/home/jibou/cosa/rhcos
+  COSA_DIR=${HOME}/cosa/rhcos
   COREOS_ASSEMBLER_ADD_CERTS=y
 fi
 cosa() {
