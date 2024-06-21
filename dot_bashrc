@@ -6,6 +6,9 @@
 TOOLBOX_IMAGE="quay.io/jbtrystram/toolbox:latest"
 TOOLBOX_NAME="jbtrystram-toolbox"
 
+# Force SHELL to be bash
+export SHELL=/bin/bash
+
 toolbox_respawn() {
    podman pull ${TOOLBOX_IMAGE}
    toolbox rm ${TOOLBOX_NAME} --force
@@ -50,8 +53,6 @@ if [[ ! -f "/run/.containerenv" ]] && [[ ! -n "$NO_TOOLBOX" ]]; then
     exec toolbox enter ${TOOLBOX_NAME} 
 fi
 
-# Force SHELL to be bash
-SHELL=/bin/bash
 
 # Source global definitions
 if [ -f /etc/profile ]; then
