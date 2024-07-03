@@ -1,11 +1,12 @@
 COREOS_ASSEMBLER_CONFIG_GIT=${HOME}/code/github.com/coreos/fedora-coreos-config
 COSA_DIR=${HOME}/cosa/fcos
 
-if test -n "${COSA_RHCOS}"; then
+cosa() {
+if ${COSA_RHCOS}; then
   COSA_DIR=${HOME}/cosa/rhcos
+  echo "rhcos!"
   COREOS_ASSEMBLER_ADD_CERTS=y
 fi
-cosa() {
    env | grep COREOS_ASSEMBLER
    local -r COREOS_ASSEMBLER_CONTAINER_LATEST="quay.io/coreos-assembler/coreos-assembler:latest"
    if [[ -z ${COREOS_ASSEMBLER_CONTAINER} ]] && $(podman image exists ${COREOS_ASSEMBLER_CONTAINER_LATEST}); then
