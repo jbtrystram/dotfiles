@@ -5,6 +5,7 @@ cosa() {
 if [[ -v COSA_RHCOS ]] ; then
   COSA_DIR=${HOME}/cosa/rhcos
   COREOS_ASSEMBLER_ADD_CERTS=y
+  COREOS_ASSEMBLER_CONFIG_GIT=${HOME}/code/github.com/openshift/os
 fi
    env | grep COREOS_ASSEMBLER
    local -r COREOS_ASSEMBLER_CONTAINER_LATEST="quay.io/coreos-assembler/coreos-assembler:latest"
