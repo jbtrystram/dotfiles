@@ -36,7 +36,7 @@ source $HOME/.exports
 #print the toolbox name if I am in a toolbox
 toolbox_name() {
     if [[ -f /run/.toolboxenv ]]; then
-        echo "⬢ "
+        echo " "
     fi
 }
 
