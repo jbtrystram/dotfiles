@@ -7,6 +7,28 @@ bufferline = "multiple"
 [editor.cursor-shape]
 insert = "bar"
 
+[editor.indent-guides]
+render = true
+character = "┊" # Some characters that work well: "▏", "┆", "┊", "⸽"
+skip-levels = 0
+
+[editor.whitespace.render]
+space = "none"
+tab = "all"
+nbsp = "none"
+nnbsp = "none"
+newline = "none"
+
+
+[editor.whitespace.characters]
+tab = "→"
+newline = "⏎"
+tabpad = "·" # Tabs will look like "→···" (depending on tab width)
+
+
+[editor.lsp]
+display-inlay-hints = true
+
 # Key bindings
 [keys.insert]
 up = "no_op"
