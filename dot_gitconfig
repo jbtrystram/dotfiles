@@ -9,7 +9,7 @@
 [init]
 	defaultBranch = main
 [core]
-	editor = vi
+	editor = hx
 [rerere]
 	enabled = true
 [alias]
