@@ -61,3 +61,4 @@ fi
 if [ -f /etc/bashrc ]; then
 	source /etc/bashrc
 fi
+. "$HOME/.cargo/env"

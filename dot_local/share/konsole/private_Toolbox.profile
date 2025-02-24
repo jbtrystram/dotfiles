@@ -1,7 +1,7 @@
 [Appearance]
 BoldIntense=true
 ColorScheme=Everforest-Medium-Light
-Font=FiraCode Nerd Font Light,11,-1,5,300,0,0,0,0,0,0,0,0,0,0,1,Regular
+Font=FiraCode Nerd Font,11,-1,5,300,0,0,0,0,0,0,0,0,0,0,1,Light
 
 [General]
 Command=bash

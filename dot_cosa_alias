@@ -7,6 +7,11 @@ if [[ -v COSA_RHCOS ]] ; then
   COREOS_ASSEMBLER_ADD_CERTS=y
   COREOS_ASSEMBLER_CONFIG_GIT=${HOME}/code/github.com/openshift/os
 fi
+
+if [[ -v COSA_BINS ]] ; then
+  EXTRA_MOUNT=${HOME}/code/github.com/coreos/coreos-assembler/bin
+fi
+
    env | grep COREOS_ASSEMBLER
    local -r COREOS_ASSEMBLER_CONTAINER_LATEST="quay.io/coreos-assembler/coreos-assembler:latest"
    if [[ -z ${COREOS_ASSEMBLER_CONTAINER} ]] && $(podman image exists ${COREOS_ASSEMBLER_CONTAINER_LATEST}); then
@@ -28,6 +33,7 @@ fi
               ${COREOS_ASSEMBLER_CONFIG_GIT:+-v=$COREOS_ASSEMBLER_CONFIG_GIT:/srv/src/config/:ro}   \
               ${COREOS_ASSEMBLER_GIT:+-v=$COREOS_ASSEMBLER_GIT/src/:/usr/lib/coreos-assembler/:ro}  \
               ${COREOS_ASSEMBLER_ADD_CERTS:+-v=/etc/pki/ca-trust:/etc/pki/ca-trust:ro}              \
+              ${EXTRA_MOUNT:+-v=$EXTRA_MOUNT:/usr/bin/local/cosa/:ro}                               \
               ${COREOS_ASSEMBLER_CONTAINER_RUNTIME_ARGS}                                            \
               ${COREOS_ASSEMBLER_CONTAINER:-$COREOS_ASSEMBLER_CONTAINER_LATEST} "$@"
    rc=$?; set +x; return $rc

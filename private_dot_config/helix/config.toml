@@ -17,7 +17,7 @@ space = "none"
 tab = "all"
 nbsp = "none"
 nnbsp = "none"
-newline = "none"
+newline = "all"
 
 
 [editor.whitespace.characters]
@@ -28,6 +28,12 @@ tabpad = "·" # Tabs will look like "→···" (depending on tab width)
 
 [editor.lsp]
 display-inlay-hints = true
+
+# Jump back and forth from G menu
+[keys.normal."g"]
+j = "jump_backward"
+k = "jump_forward"
+
 
 # Key bindings
 [keys.insert]
