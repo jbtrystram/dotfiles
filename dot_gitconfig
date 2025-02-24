@@ -15,7 +15,7 @@
 [alias]
 	unstage = reset --
 	fza = "!git ls-files -m -o --exclude-standard | fzf --print0 -m --preview 'git diff --color=always {}'  --preview-window=top:10:wrap | xargs -0 -t git add -v"
- 	
+	gredit = !"sh -c `git_gredit () { git grep  -n $1 | cut -d: -f 1,2 | fzf -d ':' -m --preview 'bat {1} --color=always --highlight-line {2}' --preview-window +{2}/2 --bind='enter:execute($EDITOR {1}:{2})'; } && git_gredit $1`" -
 [core]
     pager = delta
 	autocrlf = input
