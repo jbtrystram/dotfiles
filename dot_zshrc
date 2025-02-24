@@ -15,6 +15,7 @@ plugins=(
   git
   jsontools
   zsh-autosuggestions
+  per-directory-history
   rust
   toolbox
   vi-mode
@@ -49,3 +50,6 @@ eval "$(zoxide init zsh)"
 # import fzf keybindings
 # change to `fzf --zsh` when fzf 0.48.0 is available in fedora
 source /usr/share/fzf/shell/key-bindings.zsh
+
+# Add Gopath 
+export PATH="$HOME/go/bin:$PATH"
