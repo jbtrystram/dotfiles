@@ -1,5 +1,5 @@
 # Default apps
-export EDITOR='vim'
+export EDITOR='hx'
 
 # auth provider for gitsign 
 export GITSIGN_CONNECTOR_ID=https://github.com/login/oauth
