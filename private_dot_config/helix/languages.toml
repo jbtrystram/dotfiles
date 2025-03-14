@@ -24,3 +24,19 @@ functionTypeParameters = true
 parameterNames = true
 rangeVariableTypes = true
 
+[[language]]
+name = "json"
+language-servers = [{ name = "vscode-json-language-server" }]
+#config = { "provideFormatter" = true, "json" = { "keepLines" = { "enable" = true } } }
+formatter = { command = 'npx', args = ["prettier", "--parser", "json"] }
+
+
+[[language-server.vscode-json-language-server.config.json.schemas]]
+fileMatch = [ "meta.json", "buildmeta.json", "v1.json" ]
+url = "https://raw.githubusercontent.com/coreos/coreos-assembler/refs/heads/main/src/v1.json"
+
+[[language]]
+name = "rust"
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"

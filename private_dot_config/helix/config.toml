@@ -3,6 +3,10 @@ theme = "everforest_light_medium"
 [editor]
 mouse = false
 bufferline = "multiple"
+true-color = true
+color-modes = true
+auto-pairs = true
+end-of-line-diagnostics = "hint"
 
 [editor.cursor-shape]
 insert = "bar"
@@ -28,6 +32,8 @@ tabpad = "·" # Tabs will look like "→···" (depending on tab width)
 
 [editor.lsp]
 display-inlay-hints = true
+[editor.inline-diagnostics]
+cursor-line = "warning"
 
 # Jump back and forth from G menu
 [keys.normal."g"]
