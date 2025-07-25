@@ -1,6 +1,7 @@
 [user]
 	email = jbtrystram@redhat.com
 	name = jbtrystram
+	signingkey = 940AB55612B93ACF
 [push]
 	default = simple
 	autoSetupRemote = true
@@ -47,12 +48,12 @@
 
 [diff]
     colorMoved = default
-[commit]
-	gpgsign = true
 
 [tag]
 	gpgsign = true
 [gpg "x509"]
-	program = gitsign
+	program = gpg
 [gpg]
-	format = x509
+	format = openpgp
+[commit]
+    gpgsign = true

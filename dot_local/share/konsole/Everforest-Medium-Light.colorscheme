@@ -71,13 +71,13 @@ Color=53,167,124
 Color=53,167,124
 
 [Color7]
-Color=223,219,200
+Color=58,148,197
 
 [Color7Faint]
-Color=223,219,200
+Color=58,148,197
 
 [Color7Intense]
-Color=223,219,200
+Color=58,148,197
 
 [Foreground]
 Color=92,106,114
@@ -89,8 +89,12 @@ Color=92,106,114
 Color=92,106,114
 
 [General]
+Anchor=0.5,0.5
 Blur=false
 ColorRandomization=false
 Description=Everforest Medium Light
+FillStyle=Tile
 Opacity=1
 Wallpaper=
+WallpaperFlipType=NoFlip
+WallpaperOpacity=1

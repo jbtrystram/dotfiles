@@ -52,3 +52,11 @@ source /usr/share/fzf/shell/key-bindings.zsh
 
 # Add Gopath 
 export PATH="$HOME/go/bin:$PATH"
+
+# path aliases
+alias -g fcc=$HOME/code/github.com/coreos/fedora-coreos-config
+alias -g rcc=$HOME/code/github.com/coreos/rhel-coreos-config
+alias -g coras=$HOME/code/github.com/coreos/coreos-assembler
+
+. "$HOME/.local/bin/env"
+
