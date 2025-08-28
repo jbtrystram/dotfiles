@@ -10,9 +10,8 @@ TOOLBOX_NAME="jbtrystram-toolbox"
 export SHELL=/bin/bash
 
 toolbox_respawn() {
-   podman pull ${TOOLBOX_IMAGE}
-   toolbox rm ${TOOLBOX_NAME} --force
-   toolbox create  ${TOOLBOX_NAME} --image ${TOOLBOX_IMAGE}
+   distrobox rm ${TOOLBOX_NAME} --force
+   distrobox create --pull --name ${TOOLBOX_NAME} --image ${TOOLBOX_IMAGE}
 }
 
 prompt() {
@@ -40,7 +39,7 @@ toolbox_age() {
 	 prompt
        fi
    else 
-       toolbox create  ${TOOLBOX_NAME} --image ${TOOLBOX_IMAGE}   
+       distrobox create --pull --name ${TOOLBOX_NAME} --image ${TOOLBOX_IMAGE}   
    fi
 }
 
@@ -48,9 +47,7 @@ toolbox_age() {
 
 if [[ ! -f "/run/.containerenv" ]] && [[ ! -n "$NO_TOOLBOX" ]]; then
     toolbox_age
-    # Set SHELL to Zsh for the toolbox
-    SHELL=/bin/zsh
-    exec toolbox enter ${TOOLBOX_NAME} 
+    exec distrobox enter --name ${TOOLBOX_NAME} -e zsh
 fi
 
 
