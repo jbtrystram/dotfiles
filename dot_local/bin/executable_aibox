@@ -1,0 +1,233 @@
+#!/usr/bin/python3
+import argparse
+import os
+import sys
+import subprocess
+
+# --- CONFIGURATION ---
+
+# By default the script will inspect `/run/.containerenv` to start the
+# same container image.
+# image to use if not called from inside a container already.
+DEFAULT_IMAGE = "quay.io/jbtrystram/toolbox"
+
+# Read-only mounts: Configs or dirs you want the agent to see but not touch
+# env vars are supported; they will be expanded at runtime.
+RO_MOUNTS = [
+    # Mirrors host path to container path
+    "$HOME/.config/helix", "$HOME/.config/gcloud",
+    # Custom container path: (Host Path, Container Path)
+    # ("~/secrets.txt", "/tmp/s"),
+]
+
+# Same as above, but RW mounted
+RW_MOUNTS = [
+    "$HOME/.config/opencode",
+]
+
+# Default entrypoint
+ENTRYPOINT = "bash"
+
+# Environment variables to forward (e.g. API keys)
+FORWARD_ENV_VARS = ["TERM", "COLORTERM"]
+# Any env var with this prefix will be injected in the container
+FORWARD_ENV_VARS_PREFIX = "AIBOX_FW_"
+
+# Label to identify these containers
+CONTAINER_LABEL = "manager=aibox"
+# --- LOGIC ---
+
+
+def get_image():
+    """
+    Detects if we are running inside a Podman container by checking /run/.containerenv.
+    If so, returns the current 'imageid' to reuse it.
+    Otherwise, returns the DEFAULT_IMAGE.
+    """
+    container_env_file = "/run/.containerenv"
+    
+    if os.path.exists(container_env_file):
+        try:
+            # Source the containerenv file and get the image variable
+            result = subprocess.run(
+                ["bash", "-c", f"source {container_env_file} && echo $image"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            current_image = result.stdout.strip()
+            
+            if current_image:
+                print(f"ℹ️  Detected running container. Reusing image: {current_image}")
+                return current_image
+
+        except subprocess.CalledProcessError as e:
+            print(f"⚠️  Could not source {container_env_file}: {e}")
+        except Exception as e:
+            print(f"⚠️  Error reading {container_env_file}: {e}")
+
+    return DEFAULT_IMAGE
+
+
+def resolve_path(path):
+    """Expands ~ and vars like $HOME or $XDG_CONFIG_HOME."""
+    return os.path.abspath(os.path.expandvars(os.path.expanduser(path)))
+
+
+def get_container_name(workdir):
+    """Generates a name like 'aibox-projectname'."""
+    base = os.path.basename(workdir.rstrip(os.sep))
+    if not base:  # Handle root or empty
+        base = "root"
+    return f"aibox-{base}"
+
+def build_mount_flags(mounts, read_only=False):
+    """
+    Generates a list of podman mount flags (e.g. ['-v', 'src:dest:z']).
+    Handles symlink resolution and SELinux suffixes.
+    """
+    flags = []
+    # Determine the SELinux/Mode suffix
+    # z: Shared content (SELinux relabeling)
+    # ro: Read Only
+    mode_suffix = "ro,z" if read_only else "z"
+
+    for mount in mounts:
+        # 1. Parse Input
+        if isinstance(mount, tuple):
+            src, dest = mount
+        else:
+            src = mount
+            dest = src # Default to mirroring path
+
+        # 2. Resolve Host Path
+        resolved_src = resolve_path(src)
+        
+        # 3. Resolve Destination Path
+        if isinstance(mount, str):
+            # If input was just a string, destination is exact mirror of resolved source
+            resolved_dest = resolved_src
+        else:
+            # If input was tuple, trust the provided destination
+            resolved_dest = dest 
+
+        # 4. Generate Flag if Source Exists
+        if os.path.exists(resolved_src):
+            # Important: Resolve symlinks on the host (realpath) so we mount 
+            # the actual data, not the link (which fails inside container).
+            real_src = os.path.realpath(resolved_src)
+            
+            flags.extend(["-v", f"{real_src}:{resolved_dest}:{mode_suffix}"])
+        else:
+            print(f"⚠️  Skipping mount (not found): {src}")
+            pass
+            
+    return flags
+# --- COMMANDS ---
+
+
+def cmd_run(args):
+    """Starts a new container."""
+    workdir = resolve_path(args.path)
+    image = get_image()
+    container_name = get_container_name(workdir)
+    home_path = resolve_path("$HOME")
+
+    print(f"🔒 Starting isolated AI container: {container_name}")
+    print(f"📂 Mounted Host Directory: {workdir}")
+
+    cmd = [
+        "podman", "run",
+        "-it",
+        "--rm",
+        "--userns=keep-id",
+        f"--label={CONTAINER_LABEL}",
+        f"--name={container_name}",
+        "--env=PATH",
+        f"--env=HOME={home_path}",
+        f"--tmpfs={home_path}"
+    ]
+
+    # 1. Mount Workdir
+    cmd.extend(["-v", f"{workdir}:{workdir}:z"])
+    cmd.extend(["-w", workdir])
+
+    # 2. Mounts
+    cmd.extend(build_mount_flags(RO_MOUNTS, read_only=True))
+    cmd.extend(build_mount_flags(RW_MOUNTS, read_only=False)) 
+
+    # 3. Env Vars
+    for var in os.environ:
+        if var in FORWARD_ENV_VARS:
+            cmd.extend(["-e", f"{var}"])
+        # forward any env var that match the prefix
+        if FORWARD_ENV_VARS_PREFIX in var:
+            forwarded_var_key = var.removeprefix(FORWARD_ENV_VARS_PREFIX)
+            forwarded_value = os.environ.get(var)
+            cmd.extend(["-e", f"{forwarded_var_key}={forwarded_value}"])
+
+
+    cmd.append(image)
+    cmd.append(ENTRYPOINT)
+
+    try:
+        subprocess.run(cmd)
+    except KeyboardInterrupt:
+        # Let podman handle cleanup via --rm
+        pass
+
+
+def cmd_list():
+    """Lists running aibox containers."""
+    cmd = [
+        "podman", "ps",
+        "--filter", f"label={CONTAINER_LABEL}",
+        "--format", "table {{.ID}} {{.Names}} {{.Image}} {{.Status}}"
+    ]
+    subprocess.run(cmd)
+
+
+def cmd_attach(args):
+    """Attaches to an existing aibox container."""
+    print(f"🔗 Attaching to {args.target}...")
+    try:
+        subprocess.run(["podman", "attach", args.target])
+    except KeyboardInterrupt:
+        print("\nDetached.")
+
+# --- MAIN ---
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Run an isolated AI coding agent in a podman container.")
+    subparsers = parser.add_subparsers(dest="command")
+
+    # Subcommand: list
+    subparsers.add_parser("list", help="List active aibox containers")
+
+    # Subcommand: attach
+    attach_parser = subparsers.add_parser("attach", help="Reattach to a running aibox container")
+    attach_parser.add_argument("target", help="Container Name or ID")
+
+    # Default: Run (we handle this by checking if command is None)
+    # But to use argparse for the path argument, we need to handle it gracefully.
+    # Since argparse expects subcommands OR arguments, mixing optional positional args with subcommands is tricky.
+    # We will assume if it's not 'list' or 'attach', it's a path for the run command.
+
+    # Simple hack: If first arg is not a known subcommand, treat all args as 'run' args
+    if len(sys.argv) > 1 and sys.argv[1] in ['list', 'attach', '-h', '--help']:
+        args = parser.parse_args()
+    else:
+        # Default behavior: treat argument as path
+        args = argparse.Namespace(command="run", path=sys.argv[1] if len(sys.argv) > 1 else ".")
+
+    if args.command == "list":
+        cmd_list()
+    elif args.command == "attach":
+        cmd_attach(args)
+    else:
+        cmd_run(args)
+
+
+if __name__ == "__main__":
+    main()
