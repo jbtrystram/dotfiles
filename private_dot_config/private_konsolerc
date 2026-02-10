@@ -1,0 +1,21 @@
+[Desktop Entry]
+DefaultProfile=Toolbox.profile
+
+[General]
+ConfigVersion=1
+
+[MainWindow]
+1920x1080 screen: Height=706
+1920x1080 screen: Width=1440
+1920x1080 screen: XPosition=426
+1920x1080 screen: YPosition=28
+2 screens: Window-Maximized=true
+RestorePositionForNextInstance=false
+eDP-1=eDP-1
+
+[Profile Shortcuts]
+Ctrl+Shift+T=default
+Ctrl+Shift+Y=host shell
+
+[UiSettings]
+ColorScheme=
