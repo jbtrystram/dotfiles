@@ -5,13 +5,20 @@
 
 TOOLBOX_IMAGE="quay.io/jbtrystram/toolbox:latest"
 TOOLBOX_NAME="jbtrystram-toolbox"
+TOOLBOX_BIN=$(command -v distrobox || command -v toolbox)
+IS_TOOLBOX=$?
 
 # Force SHELL to be bash
 export SHELL=/bin/bash
 
 toolbox_respawn() {
-   distrobox rm ${TOOLBOX_NAME} --force
-   distrobox create --pull --name ${TOOLBOX_NAME} --image ${TOOLBOX_IMAGE}
+   if [ $IS_TOOLBOX ]; then
+     toolbox rm ${TOOLBOX_NAME} --force
+     toolbox create --image $TOOLBOX_IMAGE $TOOLBOX_NAME
+   else
+     distrobox rm ${TOOLBOX_NAME} --force
+     distrobox create --pull --name ${TOOLBOX_NAME} --image ${TOOLBOX_IMAGE}
+   fi
 }
 
 prompt() {
@@ -39,7 +46,12 @@ toolbox_age() {
 	 prompt
        fi
    else 
+
+     if [ $IS_TOOLBOX ]; then
+       toolbox create  ${TOOLBOX_NAME} --image ${TOOLBOX_IMAGE}
+     else
        distrobox create --pull --name ${TOOLBOX_NAME} --image ${TOOLBOX_IMAGE}   
+     fi
    fi
 }
 
@@ -47,7 +59,13 @@ toolbox_age() {
 
 if [[ ! -f "/run/.containerenv" ]] && [[ ! -n "$NO_TOOLBOX" ]]; then
     toolbox_age
-    exec distrobox enter --name ${TOOLBOX_NAME} -e zsh
+
+   if [ $IS_TOOLBOX ]; then
+     SHELL=/bin/zsh
+     toolbox enter $TOOLBOX_NAME
+   else
+     exec distrobox enter --name ${TOOLBOX_NAME} -e /bin/zsh
+   fi
 fi
 
 
