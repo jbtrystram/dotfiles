@@ -27,8 +27,7 @@ alias open='xdg-open'
 
 alias docker=podman
 #fedora seems to ship vim hidden as vi`
-alias vim=nvim
-alias vi=nvim
+alias vi=vim
 
 source ~/.cosa_alias
 
