@@ -26,7 +26,7 @@ RW_MOUNTS = [
 ]
 
 # Default entrypoint
-ENTRYPOINT = "bash"
+DEFAULT_ENTRYPOINT = "opencode"
 
 # Environment variables to forward (e.g. API keys)
 FORWARD_ENV_VARS = ["TERM", "COLORTERM"]
@@ -120,8 +120,6 @@ def build_mount_flags(mounts, read_only=False):
             flags.extend(["-v", f"{real_src}:{resolved_dest}:{mode_suffix}"])
         else:
             print(f"⚠️  Skipping mount (not found): {src}")
-            pass
-            
     return flags
 # --- COMMANDS ---
 
@@ -166,9 +164,9 @@ def cmd_run(args):
             forwarded_value = os.environ.get(var)
             cmd.extend(["-e", f"{forwarded_var_key}={forwarded_value}"])
 
-
     cmd.append(image)
-    cmd.append(ENTRYPOINT)
+    entrypoint = os.environ.get(FORWARD_ENV_VARS_PREFIX+"ENTRYPOINT" , DEFAULT_ENTRYPOINT)
+    cmd.append(entrypoint)
 
     try:
         subprocess.run(cmd)
