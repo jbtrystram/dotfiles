@@ -165,7 +165,7 @@ def cmd_run(args):
             cmd.extend(["-e", f"{forwarded_var_key}={forwarded_value}"])
 
     cmd.append(image)
-    entrypoint = os.environ.get(FORWARD_ENV_VARS_PREFIX+"ENTRYPOINT" , DEFAULT_ENTRYPOINT)
+    entrypoint = os.environ.get("AIBOX_ENTRYPOINT", DEFAULT_ENTRYPOINT)
     cmd.append(entrypoint)
 
     try:
@@ -197,7 +197,26 @@ def cmd_attach(args):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run an isolated AI coding agent in a podman container.")
+    parser = argparse.ArgumentParser(
+        description="Run an isolated AI coding agent in a podman container.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""\
+Environment variables injection and overrides:
+  Any environment variable prefixed with AIBOX_FW_ will be forwarded
+  into the container with the prefix stripped. e.g:
+
+    AIBOX_FW_ANTHROPIC_API_KEY=sk-... aibox
+
+  will set ANTHROPIC_API_KEY inside the container.
+
+  Also AIBOX_ENTRYPOINT will overrides the default entrypoint
+  command (%(def_entrypoint)s). e.g:
+
+    AIBOX_ENTRYPOINT=bash aibox
+
+  will launch a bash shell instead of the default.
+""" % {"def_entrypoint": DEFAULT_ENTRYPOINT},
+    )
     subparsers = parser.add_subparsers(dest="command")
 
     # Subcommand: list
