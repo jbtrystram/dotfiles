@@ -14,6 +14,7 @@ export SHELL=/bin/bash
 toolbox_respawn() {
    if [ $IS_TOOLBOX ]; then
      toolbox rm ${TOOLBOX_NAME} --force
+     podman pull ${TOOLBOX_IMAGE}
      toolbox create --image $TOOLBOX_IMAGE $TOOLBOX_NAME
    else
      distrobox rm ${TOOLBOX_NAME} --force
@@ -62,7 +63,7 @@ if [[ ! -f "/run/.containerenv" ]] && [[ ! -n "$NO_TOOLBOX" ]]; then
 
    if [ $IS_TOOLBOX ]; then
      SHELL=/bin/zsh
-     toolbox enter $TOOLBOX_NAME
+     exec toolbox enter $TOOLBOX_NAME
    else
      exec distrobox enter --name ${TOOLBOX_NAME} -e /bin/zsh
    fi
