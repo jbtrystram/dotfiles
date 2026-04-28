@@ -60,3 +60,6 @@ alias -g coras=$HOME/code/github.com/coreos/coreos-assembler
 
 . "$HOME/.local/bin/env"
 
+# secrets
+source ~/.shell_secrets
+
