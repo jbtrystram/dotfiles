@@ -16,6 +16,9 @@ DEFAULT_IMAGE = "quay.io/jbtrystram/toolbox"
 RO_MOUNTS = [
     # Mirrors host path to container path
     "$HOME/.config/helix", "$HOME/.config/gcloud",
+    "$HOME/.ssh/ia-agent", "$HOME/.ssh/ia-agent",
+    "$HOME/.ssh/ia-agent-config", "$HOME/.ssh/config",
+    "$HOME/.agents/", "$HOME/.agents",
     # Custom container path: (Host Path, Container Path)
     # ("~/secrets.txt", "/tmp/s"),
 ]
