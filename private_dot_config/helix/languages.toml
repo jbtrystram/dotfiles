@@ -40,3 +40,7 @@ name = "rust"
 
 [language-server.rust-analyzer.config.check]
 command = "clippy"
+
+[[language]]
+name = "groovy"
+file-types = ["groovy", "Jenkinsfile", "jenkinsfile"]
