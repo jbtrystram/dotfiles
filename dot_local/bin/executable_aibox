@@ -15,10 +15,12 @@ DEFAULT_IMAGE = "quay.io/jbtrystram/toolbox"
 # env vars are supported; they will be expanded at runtime.
 RO_MOUNTS = [
     # Mirrors host path to container path
+    "/home/jib/.claude/",
     "$HOME/.config/helix", "$HOME/.config/gcloud",
     "$HOME/.ssh/ia-agent", "$HOME/.ssh/ia-agent",
     "$HOME/.ssh/ia-agent-config", "$HOME/.ssh/config",
     "$HOME/.agents/", "$HOME/.agents",
+    "$HOME/.gitconfig/", "$HOME/.gitconfig/",
     # Custom container path: (Host Path, Container Path)
     # ("~/secrets.txt", "/tmp/s"),
 ]
@@ -168,7 +170,10 @@ def cmd_run(args):
             cmd.extend(["-e", f"{forwarded_var_key}={forwarded_value}"])
 
     cmd.append(image)
-    entrypoint = os.environ.get("AIBOX_ENTRYPOINT", DEFAULT_ENTRYPOINT)
+    if getattr(args, "bash", False):
+        entrypoint = "bash"
+    else:
+        entrypoint = os.environ.get("AIBOX_ENTRYPOINT", DEFAULT_ENTRYPOINT)
     cmd.append(entrypoint)
 
     try:
@@ -234,12 +239,20 @@ Environment variables injection and overrides:
     # Since argparse expects subcommands OR arguments, mixing optional positional args with subcommands is tricky.
     # We will assume if it's not 'list' or 'attach', it's a path for the run command.
 
+    # Add --bash flag to the main parser (available for 'run' mode)
+    parser.add_argument("--bash", action="store_true",
+                        help="Use bash as the container entrypoint instead of %(def_entrypoint)s"
+                        % {"def_entrypoint": DEFAULT_ENTRYPOINT})
+
     # Simple hack: If first arg is not a known subcommand, treat all args as 'run' args
     if len(sys.argv) > 1 and sys.argv[1] in ['list', 'attach', '-h', '--help']:
         args = parser.parse_args()
     else:
-        # Default behavior: treat argument as path
-        args = argparse.Namespace(command="run", path=sys.argv[1] if len(sys.argv) > 1 else ".")
+        # Default behavior: parse known args (like --bash) and treat positional as path
+        known, remaining = parser.parse_known_args()
+        # The first remaining positional arg is the path, default to "."
+        path = remaining[0] if remaining else "."
+        args = argparse.Namespace(command="run", path=path, bash=known.bash)
 
     if args.command == "list":
         cmd_list()
